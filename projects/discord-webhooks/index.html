@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Command Center</title>
+    <style>
+        header {
+            font-size: 50px;
+            text-align: center;
+            color: rgb(28, 172, 28);
+        }
+        
+        textarea {
+            width: 100%;
+            height: 50px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            resize: none;
+        }
+        
+        #description {
+            height: 200px;
+        }
+        
+        body {
+            background-color: #00b7ff;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border: 2px solid #555555;
+        }
+        
+        button:hover {
+            background-color: #555555;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br>
+    <header>Bot Command Center</header>
+    <br>
+    <p>Username: </p><textarea id="username"></textarea><br>
+    <p>Avatar: (Paste a link to the image here)</p><textarea id="image"></textarea><br>
+    <p>Title: </p><textarea id="title"></textarea><br>
+    <p>Description: </p><textarea id="description"></textarea><br>
+    <p>Footer: </p><textarea id="footer"></textarea><br>
+    <p> Embed Color: </p>
+    <form>
+        <input type="color" name="color" id="color">
+    </form>
+    <p>Webhook Link: </p><textarea id="webhook"></textarea><br>
+    <br>
+    <button onclick='sendMessage()'>Send</button>
+
+    <h4>By: iseau395</h4>
+</body>
+
+<script>
+    function sendMessage() {
+        var request = new XMLHttpRequest();
+        request.open("POST", document.getElementById("webhook").value);
+
+        request.setRequestHeader('Content-type', 'application/json');
+
+        var embed = {
+            title: document.getElementById("title").value,
+            description: document.getElementById("description").value,
+            color: hexToDecimal(document.getElementById("color").value),
+            footer: {
+                text: document.getElementById("footer").value
+            },
+        }
+
+        var params = {
+            username: document.getElementById("username").value,
+            avatar_url: document.getElementById("image").value,
+            embeds: [embed]
+        }
+
+        request.send(JSON.stringify(params));
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+        function hexToDecimal(hex) {
+            return parseInt(hex.replace("#", ""), 16)
+        }
+    }
+</script>
+
+</html>
